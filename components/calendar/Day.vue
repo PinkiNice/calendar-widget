@@ -23,7 +23,9 @@ export default {
   },
   methods: {
     onClick() {
-      this.$store.commit('makeDayActive', this.text);
+      if (this.$store.state.activeDate.split('/')[2] != this.text) {
+        this.$store.commit('makeDayActive', this.text);
+      }
     },
   },
 };

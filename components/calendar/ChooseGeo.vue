@@ -1,13 +1,11 @@
 <template>
- <div>
-   <input> </input>
- </div>
+  <div>
+    Choose you geolocation!
+  </div>
 </template>
-    
     
 <script>
 </script>
-
 
 <style>
 </style>

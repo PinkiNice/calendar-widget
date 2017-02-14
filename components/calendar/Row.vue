@@ -5,14 +5,14 @@
       :is="day ? 'day' : 'blank-day'" 
       :text="day ? day : ''" >
     </component>
-    <input-field v-show='activeRow'></input-field>
+    <event-menu v-if='activeRow'></event-menu>
   </div>
 </template>
     
 <script>
 import Day from './Day';
 import BlankDay from './BlankDay';
-import InputField from './InputField';
+import EventMenu from './EventMenu';
 
 export default {
   name: 'row',
@@ -29,7 +29,7 @@ export default {
   components: {
     day: Day,
     'blank-day': BlankDay,
-    'input-field': InputField,
+    'event-menu': EventMenu,
   },
 };
 </script>
