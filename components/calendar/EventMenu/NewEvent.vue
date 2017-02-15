@@ -1,7 +1,7 @@
 <template>
  <div class='container'>
-    <input v-model="text" @keyup.enter.prevent='submit'  placeholder="New Event"></input>
-    <span v-if='this.drafted'>saved.</span>
+    <input v-model="text" @keyup.enter.prevent='submit' placeholder="New Event"></input>
+    <span v-if='drafted'>saved.</span>
  </div>
 </template>    
 
@@ -26,7 +26,6 @@ export default {
   },
   watch: {
     text() {
-      console.log('mem');
       this.drafted = false;
       this.draft();
     },
@@ -40,12 +39,12 @@ export default {
     },
   },
   methods: {
-    draft() {
-      lodash.debounce(() => {
-        this.drafed = true;
+    draft: lodash.debounce(
+      function ()  {
+        this.drafted = true;
         this.$store.commit('updateDraft', this.text);
-      }, 1000)
-    },
+      }, 1000
+    ),
     submit() {
       let info = {
         text: this.text,
