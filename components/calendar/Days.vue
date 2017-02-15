@@ -8,6 +8,7 @@
 <script>
 import Row from './Row';
 import DaysHeader from './DaysHeader';
+import lodash from 'lodash';
 
 export default {
   name: 'days',
@@ -40,11 +41,7 @@ export default {
       };
 
       // Split all days by arrays of 7 day in each
-      let result = [];
-      for (let i = 0; i < (arr.length) / 7; ++i) {
-       result.push(arr.slice(0 + i * 7, 7 * (i + 1)));
-
-      };
+      let result = lodash.chunk(arr, 7);
 
       return result;
     },

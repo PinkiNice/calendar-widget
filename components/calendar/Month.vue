@@ -12,10 +12,10 @@ export default {
   data() {
     return { 
       months: [
-      'january', 'february', 'march',
-      'april',   'may',      'june',
-      'jule',    'august',   'september',
-      'october', 'november', 'december'
+      'January', 'February', 'March',
+      'April',   'May',      'June',
+      'Jule',    'August',   'September',
+      'October', 'November', 'December'
        ],
      };
   },

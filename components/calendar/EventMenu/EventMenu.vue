@@ -28,7 +28,9 @@ export default {
       return !!state.activities[state.activeDate]
     },
   },
+  watch: {
 
+  },
   components: {
     'new-event': NewEvent,
     'update-event': UpdateEvent,

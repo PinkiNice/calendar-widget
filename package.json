@@ -5,6 +5,7 @@
   "author": "PinkiNice",
   "private": true,
   "dependencies": {
+    "lodash": "^4.17.4",
     "nuxt": "latest"
   },
   "scripts": {

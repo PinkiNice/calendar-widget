@@ -18,14 +18,14 @@ export default {
     class() {
       let activeDate = this.$store.state.activeDate;
       let ifActive = activeDate && activeDate.split('/')[2] == this.text;
-      return `day-cell ${ifActive ? 'active-day' : this.hover ? 'hover-on' : ''}`
+      return `day-cell ${ifActive ? 'active-day' : this.hover ? 'hover-on' : ''}`;
     },
   },
   methods: {
     onClick() {
-      if (this.$store.state.activeDate.split('/')[2] != this.text) {
+      if (!this.$store.state.activeaDate || this.$store.state.activeDate.split('/')[2] != this.text) {
         this.$store.commit('makeDayActive', this.text);
-      }
+      };
     },
   },
 };
