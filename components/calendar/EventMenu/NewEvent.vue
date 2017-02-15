@@ -3,7 +3,7 @@
     <input v-model="text" @keyup.enter.prevent='submit' placeholder="New Event"></input>
     <span v-if='drafted'>saved.</span>
  </div>
-</template>    
+</template>
 
 <script>
 /*
@@ -26,7 +26,7 @@ export default {
   },
   watch: {
     text() {
-      this.drafted = false;
+      this.drafted = this.text == '' ? false :this.text == this.$store.state.drafts[this.$store.state.activeDate];
       this.draft();
     },
     activeDay() {

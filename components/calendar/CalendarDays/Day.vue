@@ -1,5 +1,5 @@
 <template>
-  <div @mouseover='hover = true' @click='onClick' @mouseout='hover = false' v-bind:class='this.class'>
+  <div @click='onClick' v-bind:class='this.class'>
     <span class='month-day'> {{ text }} </span>
   </div>
 </template>
@@ -15,10 +15,13 @@ export default {
     };
   },
   computed: {
-    class() {
+    class () {
       let activeDate = this.$store.state.activeDate;
       let ifActive = activeDate && activeDate.split('/')[2] == this.text;
-      return `day-cell ${ifActive ? 'active-day' : this.hover ? 'hover-on' : ''}`;
+      return `day-cell ${ifActive ? 'active-day' : this.hasInfoInStore ? 'have-info' : ''}`;
+    },
+    hasInfoInStore () {
+      return !!this.$store.state.activities[`${this.$store.state.currentMonth}/${this.text}`];
     },
   },
   methods: {
@@ -49,6 +52,11 @@ export default {
   background-color: yellow;
 }
 .hover-on {
+  background-color: yellow;
+  border-color: yellow;
+  border-style: solid;
+}
+.have-info {
   border-color: yellow;
   border-style: solid;
 }

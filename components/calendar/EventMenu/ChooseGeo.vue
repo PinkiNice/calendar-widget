@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class>
     Choose you geolocation!
   </div>
 </template>

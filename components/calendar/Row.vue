@@ -5,7 +5,7 @@
       :is="day ? 'day' : 'blank-day'" 
       :text="day ? day : ''" >
     </component>
-    <event-menu v-bind:activeDay="" v-if='activeRow'></event-menu>
+    <event-menu v-if='activeRow'></event-menu>
   </div>
 </template>
     
@@ -25,7 +25,6 @@ export default {
       let active = this.$store.state.activeDate.split('/')[2];
       // Return different values depending on day, so other elements
       // Inside row able to detect whether active day changed
-      console.log(active);
       if (this.days.indexOf(active - 0) != -1) {
         return active;
       };
