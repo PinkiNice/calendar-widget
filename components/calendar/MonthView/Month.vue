@@ -46,9 +46,10 @@ export default {
 
 <style scoped>
 .container {
+  width: 100%;
   padding-top: 20px;
   display: inline-flex;
-  justify-content: space-between;
+  justify-content: space-around;
 }
 .month-control {
   font-weight: bold;
@@ -60,6 +61,8 @@ export default {
 }
 #month {
   display: inline-block;
-  color: #FFFFFF;
+  font-family: sans-serif;
+  font-size: 30px;
+  color: #FCEE6D;
 }
 </style>

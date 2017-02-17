@@ -83,7 +83,6 @@ export default {
   position: absolute;
   z-index: 2;
   width: 100%;
-  grid-row-start: 4;
   grid-column-start: 1;
   grid-column-end: 8;
   align-content: stretch;

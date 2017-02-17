@@ -1,29 +1,47 @@
 <template>
-  <section class="container">
+  <div class="background">
     <div class='widget'>
-      <month></month>
-      <days></days>
+      <month-view v-if='mode === "month-view"'></month-view>
+      <day-view v-if='mode === "day-view"'></day-view>
     </div>
-  </section>
+  </div>
 </template>
     
 <script>
-import Month from '../components/calendar/Month';
-import Days from '../components/calendar/Days';
+import DayView from '../components/calendar/DayView/DayView';
+import MonthView from '../components/calendar/MonthView/MonthView';
 
 export default {
   name: 'widget',
   components: {
-    month: Month,
-    days: Days,
+    'month-view': MonthView,
+    'day-view': DayView,
+  },
+  computed: {
+    mode() {
+      return this.$store.state.mode;
+    }, // month-view - calendar, day-view - event-menu
   },
 };
 </script>
 
-<style>
-.container {
+<style scoped>
+.background {
+  display: inline-block;
+  width: 100%;
   padding-bottom: 50px;
+  background-color: #FCEE6D;
 }
-.widget {     
+
+.widget {
+  background-color: #2C3440;
+  width: 460px;
+  margin: 0 auto; 
+  height: auto;
+}
+
+.month-caption {
+  width: 100%;
+  margin: 0 auto;
 }
 </style>

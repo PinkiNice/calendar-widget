@@ -1,30 +1,45 @@
 <template>
   <div class="container">
-    <days-header></days-header>
-    <row v-for="row in rows" v-bind:days="row"></row>
+    <div class='week-day' v-for='day in arr'>{{ day }}</div>
+    <component
+        v-for="day in days" 
+        :is="day ? 'day' : 'blank-day'" 
+        :text="day ? day : ''" >
+    </component>
+    <event-creation-menu v-if="someDayIsActive"></event-creation-menu>
   </div>
 </template>
 
 <script>
-import Row from './Row';
+//     <row v-for="row in rows" v-bind:days="row"></row>
+// import Row from './Row';
 import DaysHeader from './DaysHeader';
+import Day from '../CalendarDays/Day';
+import BlankDay from '../CalendarDays/BlankDay';
+import EventCreationMenu from '../EventMenu/EventCreationMenu';
 import lodash from 'lodash';
 
 export default {
   name: 'days',
+  data() {
+    return {
+      arr: ['S', 'M', 'T', 'W', 'T', 'F', 'S'],
+    };
+  },
   computed: {
-    rows() {
+    days() {
       let arr = [],
           [year, month] = this.$store.state.currentMonth.split('/'),
           lastDay = new Date(year, month - -1, 0).getDate(),
           firstDay = new Date(year, month).getDay();
 
+      let i = 0;
       // Fill first n days to match day of the week to calendar.
-      for (let i = 0; i < firstDay; ++i) {
+      for (; i < firstDay; ++i) {
         arr.push(null);
 
       };
-
+      this.$store.commit('setBlankDays', i);
       // Fill array with days
       for (let i = 1; i <= lastDay; ++i) {
           arr.push(i);
@@ -41,13 +56,19 @@ export default {
       };
 
       // Split all days by arrays of 7 day in each
-      let result = lodash.chunk(arr, 7);
+      //let result = lodash.chunk(arr, 7);
 
-      return result;
+      return arr;
     },
+    someDayIsActive() {
+      return !!this.$store.state.activeDate;
+    }
   },
   components: {
-    row: Row,
+    // row: Row,
+    day: Day,
+    'event-creation-menu': EventCreationMenu,
+    'blank-day': BlankDay,
     'days-header': DaysHeader,
   },
 };
@@ -55,10 +76,26 @@ export default {
 
 <style scoped>
 .container {
-  padding-top: 20px;
-  width: 100%;
+  position: relative;
+  
+  width: 70%;
+
+  margin: 0 auto;
+
+  padding-top: 3em;
+  padding-bottom: 3em;
+
   display: grid;
-  grid-gap: 10px;
-  grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
+  grid-template-columns: repeat(7, 1fr);
+
+  grid-gap: 1em;
+}
+.week-day {
+  color: #FFFFFF;
+  font-family: sans-serif;
+  font-weight: bold;
+  font-size: 25px;
+
+  text-align: center;
 }
 </style>
