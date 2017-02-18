@@ -13,7 +13,6 @@
 <script>
 //     <row v-for="row in rows" v-bind:days="row"></row>
 // import Row from './Row';
-import DaysHeader from './DaysHeader';
 import Day from '../CalendarDays/Day';
 import BlankDay from '../CalendarDays/BlankDay';
 import EventCreationMenu from '../EventMenu/EventCreationMenu';
@@ -62,6 +61,9 @@ export default {
     },
     someDayIsActive() {
       return !!this.$store.state.activeDate;
+    },
+    toggle() {
+      return this.$store.state.toggle;
     }
   },
   components: {
@@ -69,33 +71,48 @@ export default {
     day: Day,
     'event-creation-menu': EventCreationMenu,
     'blank-day': BlankDay,
-    'days-header': DaysHeader,
   },
 };
 </script>
 
 <style scoped>
 .container {
-  position: relative;
-  
-  width: 70%;
-
-  margin: 0 auto;
+  display: grid;
 
   padding-top: 3em;
   padding-bottom: 3em;
-
-  display: grid;
+  padding-left: 2em;
+  padding-right: 2em;
   grid-template-columns: repeat(7, 1fr);
-
-  grid-gap: 1em;
+  grid-gap: 0.5em;
 }
 .week-day {
   color: #FFFFFF;
   font-family: sans-serif;
   font-weight: bold;
   font-size: 25px;
-
+  width: 1.75em;
+  height: 1.75em;
   text-align: center;
+}
+
+.expand-enter {
+  height: 0em;
+}
+
+.expand-enter-active, .expand-leave-active {
+  transition: height 20s;
+} 
+
+.expand-enter-to {
+  height: 6em;
+}
+
+.expand-leave {
+  height: 6em;
+}
+
+.expand-leave-to {
+  height: 0em;
 }
 </style>

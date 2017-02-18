@@ -6,7 +6,8 @@
   "private": true,
   "dependencies": {
     "lodash": "^4.17.4",
-    "nuxt": "latest"
+    "nuxt": "latest",
+    "tween.js": "^16.6.0"
   },
   "scripts": {
     "dev": "nuxt",

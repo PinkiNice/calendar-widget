@@ -31,6 +31,11 @@ const store = new Vuex.Store({
       'jule',    'august',   'september',
       'october', 'november', 'december'
    ],
+   palette: {
+    mainColor: '#2C3440',
+    textColor: '#FBFBFB',
+    complamentColor: '#FCEE6D',
+   },
   },
   
   mutations: {
@@ -51,7 +56,6 @@ const store = new Vuex.Store({
     },
     clickOnDay (state, date) {
       // date - 'YYYY/MM/DD'
-
       // inform the whole application about which day is currently chosen
       state.activeDate = `${state.currentMonth}/${date}`;
 

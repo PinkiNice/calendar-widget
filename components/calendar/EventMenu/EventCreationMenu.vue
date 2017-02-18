@@ -1,7 +1,19 @@
 <template>
- <div class='menu' v-bind:style="{ gridRowStart: this.row}">
-    <input type="text" v-bind:style="{ fontColor: drafted ? '#2C3440' : '#ABABAB'}" class="input-field" @input='this.drafted = false' v-model="text" @keyup.enter.prevent='submit' placeholder="Your event caption here"></input>
- </div>
+  <transition name="expand">  
+    <div class='menu clearfix' v-bind:style="this.style">
+      <input 
+        type="text" 
+        placeholder="Your event caption here"
+        v-model="text" 
+        v-bind:style="{ color: drafted ? '#2C3440' : '#6D6D6D'}" 
+        class="input-field" 
+
+        @input='this.drafted = false' 
+        @keyup.enter.prevent='submit' 
+      >
+      </input>
+    </div>
+  </transition>
 </template>
 
 <script>
@@ -11,9 +23,11 @@ Setting time is available after setting event-caption.
     <choose-geo v-if='geo'></choose-geo>
     <button @click='toggleGeo'>Geo</button>
 Check existing day info in store - if exist - show menu. [ [caption], [time], [geo] ]
+
 */
 
 import lodash from 'lodash';
+const TWEEN = require('tween.js');
 
 export default {
   name: 'event-creation-menu',
@@ -21,7 +35,12 @@ export default {
     return {
       text: this.$store.state.drafts[this.$store.state.activeDate] || '',
       drafted: false,
+      place: 2 + Math.ceil((this.$store.state.blankDays - -this.$store.state.activeDate.split('/')[2]) / 7),
+      height: undefined, // in EM
     };
+  },
+  beforeDestroy() {
+    this.height = undefined;
   },
   watch: {
     text() {
@@ -36,10 +55,36 @@ export default {
       this.updateDraft();
     },
     activeDay() {
-      this.text = this.$store.state.drafts[this.$store.state.activeDate] || '';
+        this.text = this.$store.state.drafts[this.$store.state.activeDate] || '';
+    },
+    row (newValue, oldValue) {
+      /**
+        On every call this should call animation
+        With following steps:
+          1. Reduce height of input to 0
+          2. Change the fake-var place to be equal to new value of row.
+            When this is done - DIV will take it's new position
+          3. Increase height of input to 6 em.
+      **/
+      this.animateHeight();
+      //this.place = newValue; // Alows us to change place in custom time
+      console.log(oldValue, newValue);
     },
   },
   computed: {
+    style() {
+      console.log('mem');
+      if (this.height != undefined) {
+        return { 
+          gridRowStart: this.place,
+          height: this.height + 'em' 
+        };
+      } else {
+        return {
+          gridRowStart: this.place,
+        };
+      }
+    },
     activeDay() {
       return this.$store.state.activeDate;
     },
@@ -73,6 +118,42 @@ export default {
       this.$store.commit('setEvent', info);
       this.$store.commit('setNoActiveDay');
     },
+    animateHeight() {
+      console.log('HM');
+      let vm = this; //vue instance
+      let animationFrame;
+
+      function animate(time) {
+        TWEEN.update(time);
+        animationFrame = requestAnimationFrame(animate);
+      }
+
+      const collapse = 
+        new TWEEN.Tween({ tweeningValue: 6})
+        .to({ tweeningValue: 0 }, 1750)
+        .onUpdate(function () {
+          vm.height = this.tweeningValue;
+          console.log(vm.height);
+        })
+        .onComplete(function () {
+          vm.place = vm.row;
+          cancelAnimationFrame(animationFrame);
+        });
+
+      const expand = 
+        new TWEEN.Tween({ tweeningValue: 0 })
+          .to({ tweeningValue: 6 }, 1750)
+          .onUpdate(function () {
+            vm.height = this.tweeningValue;
+          })
+          .onComplete(function () {
+            cancelAnimationFrame(animationFrame);
+          });
+
+      // collapse.chain(expand).start();
+      collapse.chain(expand).start();
+      animationFrame = requestAnimationFrame(animate);
+    },
   },
 };
 </script>
@@ -80,25 +161,52 @@ export default {
 
 <style scoped>
 .menu {
-  position: absolute;
-  z-index: 2;
-  width: 100%;
+  width: 116%;
+  height: 6em;
   grid-column-start: 1;
   grid-column-end: 8;
   align-content: stretch;
+  justify-self: center;
 }
-.input-field {
 
+.clearfix:after {
+   content: " "; /* Older browser do not support empty content */
+   visibility: hidden;
+   display: block;
+   height: 0;
+   clear: both;
 }
+
 input[type="text"] {
-  outline-width: 0;
-  text-align: center;
-  display: block;
-  margin: 10px;
-  width: 100%;
   font-family: sans-serif;
-  font-size: 20px;
-  box-shadow: none;
+  font-size: 35px;
+  width: 100%;
+  height: 100%;
+  text-align: center;
+
+  align-self: center;
+
+  outline-width: 0;
   border: none;
+}
+
+.expand-enter {
+  height: 0em;
+}
+
+.expand-enter-active, .expand-leave-active {
+  transition: height 2s;
+} 
+
+.expand-enter-to {
+  height: 6em;
+}
+
+.expand-leave {
+  height: 6em;
+}
+
+.expand-leave-to {
+  height: 0em;
 }
 </style>
