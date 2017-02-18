@@ -1,19 +1,18 @@
 <template>
-  <transition name="expand">  
-    <div class='menu clearfix' v-bind:style="this.style">
+
+    <div class="menu clearfix" v-bind:style="{gridRowStart: this.row}">
       <input 
         type="text" 
-        placeholder="Your event caption here"
+        placeholder="New event"
         v-model="text" 
-        v-bind:style="{ color: drafted ? '#2C3440' : '#6D6D6D'}" 
         class="input-field" 
-
-        @input='this.drafted = false' 
-        @keyup.enter.prevent='submit' 
+        :style="style"
+        @input="this.drafted = false" 
+        @keyup.enter.prevent="submit" 
       >
       </input>
     </div>
-  </transition>
+
 </template>
 
 <script>
@@ -33,10 +32,10 @@ export default {
   name: 'event-creation-menu',
   data() {
     return {
+      class: 'menu',
       text: this.$store.state.drafts[this.$store.state.activeDate] || '',
       drafted: false,
-      place: 2 + Math.ceil((this.$store.state.blankDays - -this.$store.state.activeDate.split('/')[2]) / 7),
-      height: undefined, // in EM
+      place: 0,
     };
   },
   beforeDestroy() {
@@ -55,7 +54,7 @@ export default {
       this.updateDraft();
     },
     activeDay() {
-        this.text = this.$store.state.drafts[this.$store.state.activeDate] || '';
+      this.text = this.$store.state.drafts[this.$store.state.activeDate] || '';
     },
     row (newValue, oldValue) {
       /**
@@ -66,32 +65,30 @@ export default {
             When this is done - DIV will take it's new position
           3. Increase height of input to 6 em.
       **/
-      this.animateHeight();
-      //this.place = newValue; // Alows us to change place in custom time
+      // this.animateHeight();
+      // this.place = newValue; // Alows us to change place in custom time
+      //this.class = 'menu expand-leave-active expand-leave-to';
       console.log(oldValue, newValue);
     },
   },
   computed: {
     style() {
-      console.log('mem');
-      if (this.height != undefined) {
-        return { 
-          gridRowStart: this.place,
-          height: this.height + 'em' 
-        };
-      } else {
-        return {
-          gridRowStart: this.place,
-        };
-      }
+      console.log(this.drafted);
+      console.log(this.palette.drafted);
+      return {
+         color: this.drafted ? this.palette.drafted : this.palette.undrafted,
+         backgroundColor: this.palette.input ,
+      };
+    },
+    palette() {
+      return this.$store.state.palette;
     },
     activeDay() {
       return this.$store.state.activeDate;
     },
     row() {
       let state = this.$store.state;
-
-      if (state.activeDate && state.blankDays) {
+      if (state.activeDate && state.blankDays !== false) {
         let day = state.activeDate.split('/')[2];
         return 2 + Math.ceil((state.blankDays - -day) / 7);
       }
@@ -118,42 +115,6 @@ export default {
       this.$store.commit('setEvent', info);
       this.$store.commit('setNoActiveDay');
     },
-    animateHeight() {
-      console.log('HM');
-      let vm = this; //vue instance
-      let animationFrame;
-
-      function animate(time) {
-        TWEEN.update(time);
-        animationFrame = requestAnimationFrame(animate);
-      }
-
-      const collapse = 
-        new TWEEN.Tween({ tweeningValue: 6})
-        .to({ tweeningValue: 0 }, 1750)
-        .onUpdate(function () {
-          vm.height = this.tweeningValue;
-          console.log(vm.height);
-        })
-        .onComplete(function () {
-          vm.place = vm.row;
-          cancelAnimationFrame(animationFrame);
-        });
-
-      const expand = 
-        new TWEEN.Tween({ tweeningValue: 0 })
-          .to({ tweeningValue: 6 }, 1750)
-          .onUpdate(function () {
-            vm.height = this.tweeningValue;
-          })
-          .onComplete(function () {
-            cancelAnimationFrame(animationFrame);
-          });
-
-      // collapse.chain(expand).start();
-      collapse.chain(expand).start();
-      animationFrame = requestAnimationFrame(animate);
-    },
   },
 };
 </script>
@@ -161,12 +122,9 @@ export default {
 
 <style scoped>
 .menu {
-  width: 116%;
-  height: 6em;
+  width: 100%;
   grid-column-start: 1;
   grid-column-end: 8;
-  align-content: stretch;
-  justify-self: center;
 }
 
 .clearfix:after {
@@ -178,35 +136,13 @@ export default {
 }
 
 input[type="text"] {
+  float: left;
   font-family: sans-serif;
-  font-size: 35px;
+  font-size: 1.5em;
   width: 100%;
   height: 100%;
   text-align: center;
-
-  align-self: center;
-
   outline-width: 0;
   border: none;
 }
-
-.expand-enter {
-  height: 0em;
-}
-
-.expand-enter-active, .expand-leave-active {
-  transition: height 2s;
-} 
-
-.expand-enter-to {
-  height: 6em;
-}
-
-.expand-leave {
-  height: 6em;
-}
-
-.expand-leave-to {
-  height: 0em;
-}
-</style>
+</style>  

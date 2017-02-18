@@ -1,16 +1,16 @@
 <template>
   <div class="container">
     <div
-      class="month-control"
+      class="month-control left"
       role="button"
       @click="$store.commit('monthBackward')"> 
       &lt;
     </div>
 
-    <div id="month">{{ month | uppercase | shorten }} {{year}}</div>
+    <div :style="style" id="month">{{ month | uppercase | shorten }} {{year}}</div>
 
     <div 
-      class="month-control"
+      class="month-control right"
       role="button"
       @click="$store.commit('monthForward')">
       &gt;
@@ -23,6 +23,14 @@
 export default {
   name: 'month',
   computed: {
+    style() {
+      return {
+        color: this.palette.complement,
+      };
+    },
+    palette() {
+      return this.$store.state.palette;
+    },
     month () { 
       let [year, month] = this.$store.state.currentMonth.split('/');
       return this.$store.state.months[month];
@@ -47,22 +55,22 @@ export default {
 <style scoped>
 .container {
   width: 100%;
-  padding-top: 20px;
+  padding-top: 5%;
   display: inline-flex;
-  justify-content: space-around;
+  justify-content: center;
 }
 .month-control {
   font-weight: bold;
-  font-size: 19px;
+  font-size: 2em;
   color: #AFAFAF;
   cursor: pointer;
-  margin-left: 30px;
-  margin-right: 30px;
 }
 #month {
+  width: 45%;
+  text-align: center;
   display: inline-block;
   font-family: sans-serif;
-  font-size: 30px;
+  font-size: 2em;
   color: #FCEE6D;
 }
 </style>

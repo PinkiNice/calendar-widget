@@ -1,12 +1,26 @@
 <template>
-  <div class="container">
-    <div class='week-day' v-for='day in arr'>{{ day }}</div>
+  <div class="grid-container">
+
+    <div class="calendar-week week-day" v-for='day in arr'>
+      <div :style="style" class="content">
+        {{ day }}
+      </div>
+    </div>
+
     <component
+        class="calendar-cell"
         v-for="day in days" 
         :is="day ? 'day' : 'blank-day'" 
         :text="day ? day : ''" >
     </component>
-    <event-creation-menu v-if="someDayIsActive"></event-creation-menu>
+
+    <transition name="expand"
+      v-on:after-leave="afterLeave"
+      :enter="enter"
+    >
+      <event-creation-menu v-if="inputActive"></event-creation-menu>
+    </transition>
+
   </div>
 </template>
 
@@ -23,9 +37,51 @@ export default {
   data() {
     return {
       arr: ['S', 'M', 'T', 'W', 'T', 'F', 'S'],
+      inputActive: false,
     };
   },
+  methods: {
+    afterLeave() {
+      console.log('mem');
+      if (this.activeDay) {
+        this.inputActive = true;
+      }
+    },
+    enter() {
+      this.inputActive = true;
+    },
+  },
+  watch: {
+    activeDay(newVal, oldVal) {
+      let state = this.$store.state;
+
+      if (oldVal == false) {
+        this.inputActive = true;
+      } else if (newVal === false) {
+        this.inputActive = false;
+      } else {
+        // If new chosen day is in the same row - no need to run animation
+        let blankDays = this.$store.state.blankDays;
+        let oldRow = 2 + Math.ceil((blankDays - -oldVal) / 7)
+        let newRow = 2 + Math.ceil((blankDays - -newVal) / 7)
+
+        if (oldRow === newRow) {
+          this.inputActive = true;
+        } else {
+          this.inputActive = false;
+        }
+      }
+    },
+  },
   computed: {
+    style() {
+      return {
+        color: this.palette.text,
+      };
+    },
+    palette() {
+      return this.$store.state.palette;
+    },
     days() {
       let arr = [],
           [year, month] = this.$store.state.currentMonth.split('/'),
@@ -62,9 +118,11 @@ export default {
     someDayIsActive() {
       return !!this.$store.state.activeDate;
     },
-    toggle() {
-      return this.$store.state.toggle;
-    }
+    activeDay() {
+
+      if (!this.$store.state.activeDate) return false;
+      return this.$store.state.activeDate.split('/')[2];
+    },
   },
   components: {
     // row: Row,
@@ -76,40 +134,71 @@ export default {
 </script>
 
 <style scoped>
-.container {
+
+.content {
+  position: relative;
+  top: 50%;
+  transform: translateY(-50%);
+}
+.menu {
+  height: 4em;
+}
+.grid-container {
   display: grid;
 
-  padding-top: 3em;
+  /*padding-top: 1em;
   padding-bottom: 3em;
   padding-left: 2em;
-  padding-right: 2em;
+  padding-right: 2em;*/
+  padding-top: 1em;
+  padding-bottom: 2em;
   grid-template-columns: repeat(7, 1fr);
   grid-gap: 0.5em;
+  justify-content: center;
+  justify-items: center;
 }
+/*.calendar-cell:nth-child(-n+7) {
+  padding-top: 2em;
+}
+.calendar-cell:nth-child(7n) {
+  padding-right: 2em;
+}
+.calendar-cell:nth-child(7n+1) {
+  padding-left: 2em;
+}
+.calendar-cell:last-child {
+  padding-bottom: 2em;
+  padding-right: 2em;
+}*/
+/*.calendar-cell:nth-last-child(7) {
+  margin-bottom: 2em;
+}*/
+
 .week-day {
   color: #FFFFFF;
   font-family: sans-serif;
   font-weight: bold;
-  font-size: 25px;
+  font-size: 1.5em;
+
   width: 1.75em;
   height: 1.75em;
+
   text-align: center;
 }
-
 .expand-enter {
   height: 0em;
 }
 
 .expand-enter-active, .expand-leave-active {
-  transition: height 20s;
+  transition: height 0.2s linear;
 } 
 
 .expand-enter-to {
-  height: 6em;
+  height: 4em;
 }
 
 .expand-leave {
-  height: 6em;
+  height: 4em;
 }
 
 .expand-leave-to {

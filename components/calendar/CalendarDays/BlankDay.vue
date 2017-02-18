@@ -10,4 +10,9 @@ export default {
 </script>
 
 <style scoped>
+.blank-day {
+  font-size: 1.25em;
+  width: 1.75em;
+  height: 1.75em;
+}
 </style>

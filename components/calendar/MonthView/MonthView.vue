@@ -1,11 +1,6 @@
 <template>
-  <div
-    @keyup.left="$store.commit('monthBackward')"
-    @keydown.left="$store.commit('monthBackward')" 
-    @keydown.right="$store.commit('monthForward')"
-    class='calendar'
-  >
-
+  <div class='calendar' :style="{ backgroundColor: this.$store.state.palette.main }">
+    <button @click='onClick'>PALETTE</button>
     <month class='month-caption'></month>
     <days></days>
 
@@ -22,8 +17,17 @@ export default {
     month: Month,
     days: Days,
   },
+  methods: {
+    onClick() {
+      this.$store.commit('togglePalette');
+    },
+  },
 };
 </script>
 
 <style scoped>
+.calendar {
+}
+button {
+}
 </style>

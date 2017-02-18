@@ -1,5 +1,5 @@
 <template>
-  <div @click='onClick' v-bind:class='this.class' v-bind:style="{ color: this.active ? '#2C3440' : '#FBFBFB' }">
+  <div @click='onClick' v-bind:class='this.class' v-bind:style="style">
     <div class="content">
     {{ text }}
     </div>
@@ -7,6 +7,11 @@
 </template>
     
 <script>
+/*
+  TODO
+  drafted {
+  background-color: gray;
+}*/
 export default {
   name: 'day',
   props: ['text'],
@@ -24,9 +29,21 @@ export default {
         : ''
       }`;
     },
+    style () {
+      console.log(this.palette.name);
+      return {
+        color: this.active ? this.palette.main : this.palette.text,
+        backgroundColor: this.active ? this.palette.complement : 'transparent',
+        borderColor: this.hasInfoInStore ? this.palette.complement : this.palette.main,
+
+      };
+    },
     active () {
       let activeDate = this.$store.state.activeDate;
       return activeDate && activeDate.split('/')[2] == this.text;
+    },
+    palette () {
+      return this.$store.state.palette;
     },
     hasInfoInStore () {
       return !!this.$store.state.activities[`${this.$store.state.currentMonth}/${this.text}`];
@@ -47,30 +64,22 @@ export default {
 
 <style scoped>
 .day-cell {
-  color: #FFFFFF;
-  font-size: 20px;
+  font-size: 1.25em;
   text-align: center;
   width: 1.75em;
   height: 1.75em;
   cursor: pointer;
-  padding: 2px;
-  border-color: #2C3440;
   border-style: solid;
-  border-width: 2px;
+  border-width: 0.1em;
   border-radius: 50%;
 }
 
 .active-day {
-  background-color: #FCEE6D;
-  border-color: #FCEE6D;
+  border-style: solid;
 }
 
 .have-info {
-  border-color: #FCEE6D;
-}
-
-.drafted {
-  background-color: gray;
+  border-style: solid;
 }
 .content {
   position: relative;

@@ -30,15 +30,67 @@ const store = new Vuex.Store({
       'april',   'may',      'june',
       'jule',    'august',   'september',
       'october', 'november', 'december'
-   ],
-   palette: {
-    mainColor: '#2C3440',
-    textColor: '#FBFBFB',
-    complamentColor: '#FCEE6D',
-   },
-  },
+    ],
+    palette: {
+      name: 'neon',
+      main: '#212121',
+      text: '#14FFEC',
+      input: '#0D7377',
+      undrafted: '#323232',
+      drafted: '#212121',
+      complement: '#0D7377'
+    },
+    paletteIndex: 0,
+    },
   
   mutations: {
+    /*
+    main: The most part of monitor () (BLACK ON DARK PALETTE)
+    text: visible on main color
+    drafted: just a little bit diff from text
+    complement: contrapart to main
+
+    Dark Background: #2C3440
+    Yellow: #FCEE6D
+    White: #FBFBFB
+    */
+    togglePalette (state) {
+      let palette = {
+        name: '',
+        main: '',
+        text: '',
+        input: '',
+        undrafted: '',
+        drafted: '',
+        complement: ''
+      };
+      let neon = {
+        name: 'neon',
+        main: '#212121',
+        text: '#14FFEC',
+        input: '#0D7377',
+        undrafted: '#323232',
+        drafted: '#212121',
+        complement: '#0D7377'
+      };
+      let dark = {
+        name: 'dark',
+        main: '#2C3440',
+        text: '#FBFBFB',
+        input: '#FBFBFB',
+        undrafted: '#424242',
+        drafted: '#000000',
+        complement: '#FCEE6D'
+      }
+      let palettes = [neon, dark];
+      state.paletteIndex += 1;
+
+      state.palette = palettes[state.paletteIndex % palettes.length];
+
+    },
+    setPalette (state, palette) {
+      state.colors = palette;
+    },
     setBlankDays (state, n) {
       state.blankDays = n;
     },

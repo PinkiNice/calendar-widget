@@ -1,5 +1,5 @@
 <template>
-  <div class="background">
+  <div :style="style" class="background">
     <div class='widget'>
       <month-view v-if='mode === "month-view"'></month-view>
       <day-view v-if='mode === "day-view"'></day-view>
@@ -21,27 +21,37 @@ export default {
     mode() {
       return this.$store.state.mode;
     }, // month-view - calendar, day-view - event-menu
+    style() {
+      return {
+        backgroundColor: this.palette.complement,
+      };
+    },
+    palette() {
+      return this.$store.state.palette;
+    }
   },
 };
 </script>
 
 <style scoped>
 .background {
-  display: inline-block;
-  width: 100%;
-  padding-bottom: 50px;
+  margin: 0;
+  padding: 0;
+  width: 100vw;
+  height: 100vh;
   background-color: #FCEE6D;
 }
 
 .widget {
-  background-color: #2C3440;
-  width: 460px;
-  margin: 0 auto; 
-  height: auto;
-}
-
-.month-caption {
-  width: 100%;
-  margin: 0 auto;
+  
+  min-height: 27em;
+  min-width: 24em;
+  /*height:60vw;
+  max-height:80vh;  max-height / height = aspect ratio */
+/*  width:40vw;
+  max-width: 60vh;  max-width / width = aspect ratio */
+  width: 41em;
+  margin-left: auto; 
+  margin-right: auto;
 }
 </style>
