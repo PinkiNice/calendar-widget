@@ -27,6 +27,8 @@ export default {
 
 <style scoped>
 .calendar {
+  padding:0;
+  margin:0;
 }
 button {
 }

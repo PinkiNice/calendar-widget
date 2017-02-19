@@ -1,7 +1,7 @@
 <template>
   <div class="grid-container">
 
-    <div class="calendar-week week-day" v-for='day in arr'>
+    <div class="calendar-cell week-day" v-for='day in arr'>
       <div :style="style" class="content">
         {{ day }}
       </div>
@@ -42,7 +42,6 @@ export default {
   },
   methods: {
     afterLeave() {
-      console.log('mem');
       if (this.activeDay) {
         this.inputActive = true;
       }
@@ -145,7 +144,6 @@ export default {
 }
 .grid-container {
   display: grid;
-
   /*padding-top: 1em;
   padding-bottom: 3em;
   padding-left: 2em;
@@ -157,18 +155,19 @@ export default {
   justify-content: center;
   justify-items: center;
 }
-/*.calendar-cell:nth-child(-n+7) {
-  padding-top: 2em;
+
+/* After implying margin distance between days becomes unconstant*/
+/*.calendar-cell:nth-child(7n) {
+  margin-right: 2em;
 }
-.calendar-cell:nth-child(7n) {
-  padding-right: 2em;
-}
+
+
 .calendar-cell:nth-child(7n+1) {
-  padding-left: 2em;
+  margin-left: 2em;
 }
+
 .calendar-cell:last-child {
-  padding-bottom: 2em;
-  padding-right: 2em;
+  margin-right: 2em;
 }*/
 /*.calendar-cell:nth-last-child(7) {
   margin-bottom: 2em;
@@ -178,7 +177,7 @@ export default {
   color: #FFFFFF;
   font-family: sans-serif;
   font-weight: bold;
-  font-size: 1.5em;
+  font-size: 1.25em;
 
   width: 1.75em;
   height: 1.75em;

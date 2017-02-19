@@ -1,7 +1,13 @@
 <template>
-  <div class='container'>
-    <input type="text" v-model="text">
-  </div>
+    <input 
+      spellcheck="false" 
+      :style="{
+        color: this.$store.state.palette.main,
+        backgroundColor: 'transparent' 
+        }" 
+      type="text" 
+      v-model="text"
+    >
 </template>
     
 <script>
@@ -25,14 +31,25 @@ export default {
   display: inline-block;
 }
 input[type="text"] {
-  outline-width: 0;
-  text-align: center;
   display: block;
-  margin: 10px;
-  width: 100%;
+  margin-top: 1em;
+  margin-bottom: 1em;
+  width: 70%;
+  align-self: center;
+
+  margin-left: 1em;
+  margin-right: 1em;
+
+  padding: 0;
+  
+  text-align: center;
+ 
   font-family: sans-serif;
-  font-size: 20px;
+  font-size: 2.5em;
+
   appearance: none;
+
+  outline-width: 0;
   box-shadow: none;
   border-radius: none;
   border: none;

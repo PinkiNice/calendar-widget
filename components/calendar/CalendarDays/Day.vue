@@ -1,7 +1,7 @@
 <template>
   <div @click='onClick' v-bind:class='this.class' v-bind:style="style">
     <div class="content">
-    {{ text }}
+      {{ text }}
     </div>
   </div>
 </template>
@@ -30,7 +30,6 @@ export default {
       }`;
     },
     style () {
-      console.log(this.palette.name);
       return {
         color: this.active ? this.palette.main : this.palette.text,
         backgroundColor: this.active ? this.palette.complement : 'transparent',

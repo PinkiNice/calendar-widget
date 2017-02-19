@@ -4,8 +4,8 @@ html, body
   color: #2e2f30;
   letter-spacing: 0.5px;
   font-family: "Source Sans Pro", Arial, sans-serif;
-  height: 100vh;
   margin: 0;
+  padding: 0;
 }
 
 footer
@@ -18,11 +18,6 @@ footer
 a, a:hover, a:focus, a:visited
 {
   color: #41B883;
-}
-
-.logo {
-  width: 243px;
-  height: 218px;
 }
 
 .page-enter-active, .page-leave-active

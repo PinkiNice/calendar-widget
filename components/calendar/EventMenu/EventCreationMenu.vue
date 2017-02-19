@@ -1,6 +1,6 @@
 <template>
 
-    <div class="menu clearfix" v-bind:style="{gridRowStart: this.row}">
+    <div class="menu" v-bind:style="{gridRowStart: this.row}">
       <input 
         type="text" 
         placeholder="New event"
@@ -9,14 +9,19 @@
         :style="style"
         @input="this.drafted = false" 
         @keyup.enter.prevent="submit" 
-      >
-      </input>
+      ></input>
+      <div :style="style" class="icon-container">
+        <i :class="iconClass" ></i>
+      </div>
     </div>
 
 </template>
 
 <script>
 /*
+ion-ios-circle-outline - no draft
+ion-ios-checkmark - draft
+
 3 Options: Change event-caption, change time, change location.
 Setting time is available after setting event-caption.
     <choose-geo v-if='geo'></choose-geo>
@@ -34,8 +39,7 @@ export default {
     return {
       class: 'menu',
       text: this.$store.state.drafts[this.$store.state.activeDate] || '',
-      drafted: false,
-      place: 0,
+      drafted: true,
     };
   },
   beforeDestroy() {
@@ -56,27 +60,14 @@ export default {
     activeDay() {
       this.text = this.$store.state.drafts[this.$store.state.activeDate] || '';
     },
-    row (newValue, oldValue) {
-      /**
-        On every call this should call animation
-        With following steps:
-          1. Reduce height of input to 0
-          2. Change the fake-var place to be equal to new value of row.
-            When this is done - DIV will take it's new position
-          3. Increase height of input to 6 em.
-      **/
-      // this.animateHeight();
-      // this.place = newValue; // Alows us to change place in custom time
-      //this.class = 'menu expand-leave-active expand-leave-to';
-      console.log(oldValue, newValue);
-    },
   },
   computed: {
+    iconClass() {
+      return this.text == '' ? '' : this.drafted ? 'ion-ios-checkmark' : 'ion-ios-circle-outline';
+    },
     style() {
-      console.log(this.drafted);
-      console.log(this.palette.drafted);
       return {
-         color: this.drafted ? this.palette.drafted : this.palette.undrafted,
+         color: this.palette.main,
          backgroundColor: this.palette.input ,
       };
     },
@@ -125,24 +116,30 @@ export default {
   width: 100%;
   grid-column-start: 1;
   grid-column-end: 8;
-}
-
-.clearfix:after {
-   content: " "; /* Older browser do not support empty content */
-   visibility: hidden;
-   display: block;
-   height: 0;
-   clear: both;
+  display: inline-flex;
 }
 
 input[type="text"] {
   float: left;
   font-family: sans-serif;
   font-size: 1.5em;
+  padding-bottom: 0;
+  padding-top: 0;
+  padding-left: 1em;
   width: 100%;
-  height: 100%;
-  text-align: center;
+  text-align: left;
   outline-width: 0;
   border: none;
+  display: inline-block;
+  vertical-align: middle;
+}
+i {
+  font-size: 1.5em;
+  padding-right: 0.2em;
+  padding-left: 0.2em;
+  align-self: center;
+}
+.icon-container {
+  display: inline-flex;
 }
 </style>  

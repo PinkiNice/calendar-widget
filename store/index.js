@@ -1,5 +1,6 @@
 import Vuex from 'vuex';
 import lodash from 'lodash';
+import Vue from 'vue';
 
 const changeMonth = (state, step) => {
   let [year, month] = state.currentMonth.split('/');
@@ -8,6 +9,56 @@ const changeMonth = (state, step) => {
   state.currentMonth = date.getFullYear() + '/' + date.getMonth();
 };
 
+const palettes = [
+  { 
+    name: 'strawberry',
+    main: '#F03861',
+    text: '#FEF2F2',
+    input: '#FEF2F2',
+    complement: '#FEF2F2'
+  },
+  {
+    name: 'bunny',
+    main: '#FFF6F6',
+    text: '#891180',
+    input: '#EEA1EB',
+    complement: '#EEA1EB'
+  },
+  {
+    name: 'dark',
+    main: '#212121',
+    text: '#14FFEC',
+    input: '#212121',
+    complement: '#323232'
+  },
+  {
+    name: 'plain',
+    main: '#2C3440',
+    text: '#FBFBFB',
+    input: '#FBFBFB',
+    icons: '#2C3440',
+    complement: '#FCEE6D'
+  },
+  {
+    name: 'candy',
+    main: '#F68686',
+    text: '#FFE3B9',
+    input: '#92CCE1',
+    complement: '#FFE3B9'
+  },
+  {
+    name: 'summer',
+    main: '#F19584',
+    text: '#F6E4C4',
+    input: '#29C6CD',
+    complement: '#29C6CD'
+  }
+];  
+
+const getPalette = (name) => {
+  let palette = palettes.filter(palette => palette.name == name);
+  return palette[0] || {};
+}
 const store = new Vuex.Store({
   state: {
     mode: 'month-view', // month-view or day-view
@@ -15,6 +66,11 @@ const store = new Vuex.Store({
     activeDate: false,
     blankDays: false,
     activities: {
+      '2017/1/1': {
+        text: 'Privet!',
+        time: false,
+        location: false,
+      },
       // There are data about date's which have smth noticed
       // [key] = date itself in a format 2017/01/10
       // [value] = object with information about activity
@@ -31,15 +87,7 @@ const store = new Vuex.Store({
       'jule',    'august',   'september',
       'october', 'november', 'december'
     ],
-    palette: {
-      name: 'neon',
-      main: '#212121',
-      text: '#14FFEC',
-      input: '#0D7377',
-      undrafted: '#323232',
-      drafted: '#212121',
-      complement: '#0D7377'
-    },
+    palette: getPalette('plain'),
     paletteIndex: 0,
     },
   
@@ -55,38 +103,18 @@ const store = new Vuex.Store({
     White: #FBFBFB
     */
     togglePalette (state) {
-      let palette = {
-        name: '',
-        main: '',
-        text: '',
-        input: '',
-        undrafted: '',
-        drafted: '',
-        complement: ''
-      };
-      let neon = {
-        name: 'neon',
-        main: '#212121',
-        text: '#14FFEC',
-        input: '#0D7377',
-        undrafted: '#323232',
-        drafted: '#212121',
-        complement: '#0D7377'
-      };
-      let dark = {
-        name: 'dark',
-        main: '#2C3440',
-        text: '#FBFBFB',
-        input: '#FBFBFB',
-        undrafted: '#424242',
-        drafted: '#000000',
-        complement: '#FCEE6D'
-      }
-      let palettes = [neon, dark];
+      
       state.paletteIndex += 1;
 
       state.palette = palettes[state.paletteIndex % palettes.length];
+      console.log(`CURRENT PALETTE IS: ${state.palette.name}`);
 
+    },
+    changeLocation (state, location) {
+      state.activities[state.activeDate] = { ...state.activities[state.activeDate], location };
+    },
+    setTime (state, time) {
+      state.activities[state.activeDate] = { ...state.activities[state.activeDate], time };
     },
     setPalette (state, palette) {
       state.colors = palette;

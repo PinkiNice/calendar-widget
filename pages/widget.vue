@@ -1,10 +1,10 @@
 <template>
-  <div :style="style" class="background">
-    <div class='widget'>
-      <month-view v-if='mode === "month-view"'></month-view>
-      <day-view v-if='mode === "day-view"'></day-view>
+    <div :style="style" class="background">
+      <div class='widget'>
+        <month-view v-if='mode === "month-view"'></month-view>
+        <day-view v-if='mode === "day-view"'></day-view>
+      </div>
     </div>
-  </div>
 </template>
     
 <script>
@@ -34,12 +34,29 @@ export default {
 </script>
 
 <style scoped>
+::-webkit-input-placeholder { /* Chrome/Opera/Safari */
+  color: pink;
+}
+::-moz-placeholder { /* Firefox 19+ */
+  color: pink;
+}
+:-ms-input-placeholder { /* IE 10+ */
+  color: pink;
+}
+:-moz-placeholder { /* Firefox 18- */
+  color: pink;
+}
+
 .background {
   margin: 0;
   padding: 0;
   width: 100vw;
   height: 100vh;
   background-color: #FCEE6D;
+}
+
+.height-active-enter, .height-active-leave {
+  transition: height 1s;
 }
 
 .widget {

@@ -1,19 +1,19 @@
 <template>
   <div class="container">
     <div
-      class="month-control left"
+      class="month-control left ion-ios-arrow-back"
       role="button"
+      :style="{color: this.$store.state.palette.text }"
       @click="$store.commit('monthBackward')"> 
-      &lt;
     </div>
 
     <div :style="style" id="month">{{ month | uppercase | shorten }} {{year}}</div>
 
     <div 
-      class="month-control right"
+      class="month-control right ion-ios-arrow-forward"
       role="button"
+      :style="{color: this.$store.state.palette.text }"
       @click="$store.commit('monthForward')">
-      &gt;
     </div>
   </div>
 </template>
@@ -64,6 +64,7 @@ export default {
   font-size: 2em;
   color: #AFAFAF;
   cursor: pointer;
+  opacity: 0.7;
 }
 #month {
   width: 45%;
