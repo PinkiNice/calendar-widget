@@ -18,7 +18,10 @@
     </label>
     <input 
       maxlength="5"
-      :style="{backgroundColor: 'transparent'}"
+      :style="{ 
+        backgroundColor: 'transparent',
+        color: this.$store.state.palette.icons,
+      }"
       v-model="time"
       placeholder="00:00" 
       v-model:value="time"
