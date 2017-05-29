@@ -1,7 +1,8 @@
 <template>
 
-    <div class="menu" v-bind:style="{gridRowStart: this.row}">
+    <div class="menu" v-bind:style="{ gridRowStart: this.row }">
       <input 
+        ref="input"
         type="text" 
         placeholder="New event"
         v-model="text" 
@@ -14,21 +15,10 @@
         <i :class="iconClass" ></i>
       </div>
     </div>
-
+  
 </template>
 
 <script>
-/*
-ion-ios-circle-outline - no draft
-ion-ios-checkmark - draft
-
-3 Options: Change event-caption, change time, change location.
-Setting time is available after setting event-caption.
-    <choose-geo v-if='geo'></choose-geo>
-    <button @click='toggleGeo'>Geo</button>
-Check existing day info in store - if exist - show menu. [ [caption], [time], [geo] ]
-
-*/
 
 import lodash from 'lodash';
 const TWEEN = require('tween.js');
@@ -37,13 +27,9 @@ export default {
   name: 'event-creation-menu',
   data() {
     return {
-      class: 'menu',
       text: this.$store.state.drafts[this.$store.state.activeDate] || '',
       drafted: true,
     };
-  },
-  beforeDestroy() {
-    this.height = undefined;
   },
   watch: {
     text() {
@@ -60,6 +46,9 @@ export default {
     activeDay() {
       this.text = this.$store.state.drafts[this.$store.state.activeDate] || '';
     },
+  },
+  activated() {
+    this.$refs.input.focus();
   },
   computed: {
     iconClass() {
@@ -128,6 +117,7 @@ input[type="text"] {
   padding-left: 1em;
   width: 100%;
   text-align: left;
+  align-self: stretch;
   outline-width: 0;
   border: none;
   display: inline-block;
@@ -136,8 +126,8 @@ input[type="text"] {
 i {
   font-size: 1.5em;
   padding-right: 0.2em;
-  padding-left: 0.2em;
-  align-self: center;
+  padding-top: 0.2em;
+  align-self: flex-start;
 }
 .icon-container {
   display: inline-flex;

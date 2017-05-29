@@ -31,23 +31,21 @@ export default {
   display: inline-block;
 }
 input[type="text"] {
-  display: block;
-  margin-top: 1em;
-  margin-bottom: 1em;
-  width: 70%;
-  align-self: center;
+  display: inline-block;
+  margin-top: 0.5em;
+  margin-bottom: 0.5em;
 
-  margin-left: 1em;
-  margin-right: 1em;
 
-  padding: 0;
+  padding-left: 1em;
+  padding-right: 1em;
+
+  width: 80%;
+
   
   text-align: center;
- 
+
   font-family: sans-serif;
   font-size: 2.5em;
-
-  appearance: none;
 
   outline-width: 0;
   box-shadow: none;

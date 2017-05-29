@@ -1,12 +1,17 @@
 <template>
-  <div class="event-container"
-    :style="{backgroundColor: this.$store.state.palette.text }"
-  >
-    <event-caption></event-caption>
-    <div class="event-info"> 
-      <event-location class="block"></event-location>
-      <event-time class="block"></event-time>
+  <div class="info">
+
+    <div class="event-container"
+      :style="{ backgroundColor: this.$store.state.palette.text }"
+    > 
+      <event-caption></event-caption>
+      <div class="event-info"> 
+        <event-location class="block"></event-location>
+        <event-time class="block"></event-time>
+      </div>
     </div>
+
+    <div class="shadow"></div>  
   </div>
 </template>
     
@@ -31,10 +36,33 @@ export default {
 </script>
 
 <style scoped>
+.shadow {
+  min-width: 3em;
+  min-height: 3em;
+  width: 90%;
+  height: 80%;
+  position: absolute;
+  top: -0.75em;
+  left: 0;
+  right: 0;
+  margin-left: auto;
+  margin-right: auto;
+  border-top-right-radius: 0.3em;
+  border-top-left-radius: 0.3em;
+  opacity: 0.5;
+  z-index: 5;
+  background-color: #EAEAEA;
+  align-self: center;
+}
+.info {
+  position: relative;
+}
 .event-container {
+  position: relative;
   border-top-right-radius: 0.5em;
   border-top-left-radius: 0.5em;
   display: flex;
+  z-index: 10;
   flex-direction: column;
 }
 
@@ -43,6 +71,7 @@ export default {
   flex-direction: row;
   justify-content: space-around;
   align-items: baseline;
-  margin-bottom: 3em;
+  margin-top: 2em;
+  margin-bottom: 2em;
 }
 </style>

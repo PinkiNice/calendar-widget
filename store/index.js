@@ -9,28 +9,11 @@ const changeMonth = (state, step) => {
   state.currentMonth = date.getFullYear() + '/' + date.getMonth();
 };
 
+Vue.filter('uppercase', function (value) {
+  return value.toUpperCase();
+});
+
 const palettes = [
-  { 
-    name: 'strawberry',
-    main: '#F03861',
-    text: '#FEF2F2',
-    input: '#FEF2F2',
-    complement: '#FEF2F2'
-  },
-  {
-    name: 'bunny',
-    main: '#FFF6F6',
-    text: '#891180',
-    input: '#EEA1EB',
-    complement: '#EEA1EB'
-  },
-  {
-    name: 'dark',
-    main: '#212121',
-    text: '#14FFEC',
-    input: '#212121',
-    complement: '#323232'
-  },
   {
     name: 'plain',
     main: '#2C3440',
@@ -39,20 +22,38 @@ const palettes = [
     icons: '#2C3440',
     complement: '#FCEE6D'
   },
+  { 
+    name: 'strawberry',
+    main: '#F03861',
+    text: '#FEF2F2',
+    input: '#FEF2F2',
+    icons: '#F03861',
+    complement: '#FEF2F2'
+  },
+  /*{
+    name: 'bunny',
+    main: '#FFF6F6',
+    text: '#891180',
+    input: '#EEA1EB',
+    icons: '#FFF6F6',
+    complement: '#EEA1EB'
+  },
+  {
+    name: 'dark',
+    main: '#212121',
+    text: '#14FFEC',
+    input: '#212121',
+    icons: '#212121',
+    complement: '#323232'
+  },
   {
     name: 'candy',
     main: '#F68686',
     text: '#FFE3B9',
     input: '#92CCE1',
+    icons: '#F68686',
     complement: '#FFE3B9'
-  },
-  {
-    name: 'summer',
-    main: '#F19584',
-    text: '#F6E4C4',
-    input: '#29C6CD',
-    complement: '#29C6CD'
-  }
+  },*/
 ];  
 
 const getPalette = (name) => {
@@ -61,7 +62,7 @@ const getPalette = (name) => {
 }
 const store = new Vuex.Store({
   state: {
-    mode: 'month-view', // month-view or day-view
+    view: 'month-view', // month-view or day-view
     currentMonth: new Date().getFullYear() + '/' + new Date().getMonth(),
     activeDate: false,
     blankDays: false,
@@ -139,13 +140,13 @@ const store = new Vuex.Store({
       // inform the whole application about which day is currently chosen
       state.activeDate = `${state.currentMonth}/${date}`;
 
-      // move widget to a event-view mode if day already have info
+      // move widget to a event-view view if day already have info
       if (state.activities[state.activeDate]) {
-        state.mode = 'day-view';
+        state.view = 'day-view';
       };
     },
     toggleViewMode(state) {
-      state.mode = state.mode === 'month-view' ? 'event-view' : 'month-view';
+      state.view = state.view === 'month-view' ? 'day-view' : 'month-view';
     },
     setNoActiveDay (state) {
       state.activeDate = false;

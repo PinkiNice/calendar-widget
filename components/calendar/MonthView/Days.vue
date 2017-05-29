@@ -1,6 +1,6 @@
 <template>
   <div class="grid-container">
-
+  
     <div class="calendar-cell week-day" v-for='day in arr'>
       <div :style="style" class="content">
         {{ day }}
@@ -14,11 +14,25 @@
         :text="day ? day : ''" >
     </component>
 
-    <transition name="expand"
-      v-on:after-leave="afterLeave"
-      :enter="enter"
+    <transition 
+      name="container-expand"
+      v-on:after-enter="enter"
+      v-on:after-leave="containerLeft"
     >
-      <event-creation-menu v-if="inputActive"></event-creation-menu>
+      <div 
+        class="input-container" 
+        v-show="containerActive"
+
+        :style="{ 
+          gridRowStart: this.gridRow,  
+        }"
+      >
+        <transition name="expand" v-on:after-leave="afterInputLeft">
+          <keep-alive>
+            <event-creation-menu v-if="inputActive"></event-creation-menu>
+          </keep-alive>
+        </transition>
+      </div>
     </transition>
 
   </div>
@@ -38,38 +52,51 @@ export default {
     return {
       arr: ['S', 'M', 'T', 'W', 'T', 'F', 'S'],
       inputActive: false,
+      containerActive: false,
+      gridRow: false,
     };
   },
   methods: {
-    afterLeave() {
+    afterInputLeft () {
+      console.log("Deactivating Container");
+      this.containerActive = false;
+    },
+    containerLeft () {
       if (this.activeDay) {
-        this.inputActive = true;
+        console.log("Reactivating container");
+        this.gridRow = 2 + Math.ceil((this.$store.state.blankDays - -this.activeDay) / 7);
+        this.containerActive = true;
       }
     },
-    enter() {
+    enter () {
+      console.log("Activating Input");
       this.inputActive = true;
     },
   },
   watch: {
     activeDay(newVal, oldVal) {
       let state = this.$store.state;
+      let blankDays = state.blankDays;
 
       if (oldVal == false) {
-        this.inputActive = true;
+        console.log("Activating Container");
+        this.containerActive = true;
+        this.gridRow = 2 + Math.ceil((blankDays - -newVal) / 7);
       } else if (newVal === false) {
+        console.log("Deactivating Input");
         this.inputActive = false;
       } else {
         // If new chosen day is in the same row - no need to run animation
-        let blankDays = this.$store.state.blankDays;
         let oldRow = 2 + Math.ceil((blankDays - -oldVal) / 7)
         let newRow = 2 + Math.ceil((blankDays - -newVal) / 7)
 
-        if (oldRow === newRow) {
-          this.inputActive = true;
-        } else {
+        if (oldRow !== newRow) {
           this.inputActive = false;
         }
       }
+    },
+    gridRow(newVal, oldVal) {
+
     },
   },
   computed: {
@@ -140,7 +167,7 @@ export default {
   transform: translateY(-50%);
 }
 .menu {
-  height: 4em;
+  height: 6em;
 }
 .grid-container {
   display: grid;
@@ -154,6 +181,43 @@ export default {
   grid-gap: 0.5em;
   justify-content: center;
   justify-items: center;
+}
+
+.input-container {
+  align-self: center;
+  grid-column-start: 1;
+  grid-column-end: 8;
+  width: 100%;
+  height: 6em;
+  justify-content: center;
+  display: flex;
+  align-items: center;
+}
+
+.container-expand-enter {
+  height: 0em;
+}
+
+.container-expand-enter-to {
+  height: 6em;
+}
+
+.container-expand-enter-active {
+  /* transition: height 0.2s cubic-bezier(.25,0,.61,.28); */
+  transition: height 0.2s ease-in;
+}
+
+.container-expand-leave-active {
+  /* transition: height 0.2s cubic-bezier(.25,0,.61,.28); */
+  transition: height 0.2s ease-out;
+}
+
+.container-expand-leave {
+  height: 6em;
+}
+
+.container-expand-leave-to {
+  height: 0em;
 }
 
 /* After implying margin distance between days becomes unconstant*/
@@ -189,15 +253,15 @@ export default {
 }
 
 .expand-enter-active, .expand-leave-active {
-  transition: height 0.2s linear;
+  transition: height 0.15s cubic-bezier(.25,0,.61,.28);
 } 
 
 .expand-enter-to {
-  height: 4em;
+  height: 6em;
 }
 
 .expand-leave {
-  height: 4em;
+  height: 6em;
 }
 
 .expand-leave-to {

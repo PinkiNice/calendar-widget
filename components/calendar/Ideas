@@ -10,3 +10,7 @@ Colors:
 Dark Background: #2C3440
 Yellow: #FCEE6D
 White: #FBFBFB
+
+PALETTE SHOULD BE IMPLEMENTED THROUGH CLASSES!
+
+Each element has it's own class defining color

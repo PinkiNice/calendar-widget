@@ -34,6 +34,7 @@ export default {
   padding-top: 1em;
   padding-left: 1em;
   padding-right: 1em;
+  box-shadow: 0px 4px 16px 3px #888888;
 }
 
 

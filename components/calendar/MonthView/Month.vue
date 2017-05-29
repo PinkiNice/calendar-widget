@@ -7,7 +7,13 @@
       @click="$store.commit('monthBackward')"> 
     </div>
 
-    <div :style="style" id="month">{{ month | uppercase | shorten }} {{year}}</div>
+    <div :style="style" id="month">
+      <div class="capture-container">
+        <span class="capture" id="prev"> PREV 2017</span>
+        <span class="capture" id="current"> {{ month | uppercase | shorten }} {{year}} </span>
+        <span class="capture" id="next"> NEXT 2017 </span>
+      </div>
+    </div>
 
     <div 
       class="month-control right ion-ios-arrow-forward"
@@ -53,6 +59,25 @@ export default {
 
 
 <style scoped>
+.capture-container {
+  width: 100%;
+}
+#prev, #next {
+  display: none;
+  left: 0px;
+}
+span {
+  white-space: nowrap;
+}
+#capture {
+  position: relative;
+}
+.left {
+  margin-right: 1rem;
+}
+.right {
+  margin-left: 1rem;
+}
 .container {
   width: 100%;
   padding-top: 5%;
@@ -67,9 +92,12 @@ export default {
   opacity: 0.7;
 }
 #month {
-  width: 45%;
+  width: 5em;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  overflow: hidden;
   text-align: center;
-  display: inline-block;
   font-family: sans-serif;
   font-size: 2em;
   color: #FCEE6D;

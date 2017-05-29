@@ -2,7 +2,7 @@
   <div class="weather-container">
     <div 
       class="icon ion-ios-sunny"
-      :style="{color: this.$store.state.palette.complement}"
+      :style="{color: this.$store.state.palette.text}"
     >
     </div>
     <div class="degrees">
